@@ -1,0 +1,89 @@
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <title>Petal Corner</title>
+     <link rel="preconnect" href="https://fonts.googleapis.com" />
+     <link
+       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap"
+       rel="stylesheet"
+     />
+     <link rel="stylesheet" href="style.css" />
+   </head>
+   <body>
+     <div class="wrap">
+       <div class="hero-box">
+         <nav>
+           <div class="links">
+             <a href="index.html">Home</a>
+             <a href="shop.html">Shop</a>
+             <a href="about.html">About</a>
+           </div>
+           <div class="logo">Petal Corner</div>
+           <a class="nav-btn" href="shop.html">Shop Now</a>
+         </nav>
+
+         <h1>Fresh, Locally Grown Flowers for Every Moment</h1>
+         <p>
+           From everyday bouquets to unforgettable weddings, thoughtfully grown
+           and handcrafted right here in our community.
+         </p>
+         <a class="btn-light" href="shop.html">Shop Bouquets</a>
+         <a class="btn-outline" href="shop.html">Wedding Flowers</a>
+
+         <div class="hero-cards">
+           <img src="https://placehold.co/400x300/F4A6C0/FFFFFF?text=Peonies" alt="Peonies" />
+           <img src="https://placehold.co/400x300/E63946/FFFFFF?text=Red+Roses" alt="Roses" />
+           <img src="https://placehold.co/400x300/F28482/FFFFFF?text=Tulips" alt="Tulips" />
+         </div>
+       </div>
+
+       <h2 class="section-title">Shop by Occasion</h2>
+       <div class="occasions">
+         <div class="occasion">
+           <img src="https://placehold.co/300x300/B8A1E3/FFFFFF?text=Everyday" alt="Everyday" />
+           <h3>Everyday Bouquets</h3>
+           <a href="shop.html">Show All</a>
+         </div>
+         <div class="occasion">
+           <img src="https://placehold.co/300x300/F9C74F/444444?text=Birthday" alt="Birthday" />
+           <h3>Birthday Flowers</h3>
+           <a href="shop.html">Show All</a>
+         </div>
+         <div class="occasion">
+           <img src="https://placehold.co/300x300/F1EDE4/444444?text=Wedding" alt="Wedding" />
+           <h3>Wedding Flowers</h3>
+           <a href="shop.html">Show All</a>
+         </div>
+       </div>
+
+       <div class="panel">
+         <h2>Featured Flowers</h2>
+         <div class="grid" id="featured"></div>
+       </div>
+
+       <footer>Petal Corner, made with love</footer>
+     </div>
+
+     <script>
+       fetch("/products")
+         .then((response) => response.json())
+         .then((flowers) => {
+           const box = document.getElementById("featured");
+           flowers.slice(0, 6).forEach((flower) => {
+             box.innerHTML += `
+               <div class="card">
+                 <img src="${flower.image}" alt="${flower.name}" />
+                 <h3>${flower.name}</h3>
+                 <div class="row">
+                   <span class="price">Rs ${flower.price}</span>
+                   <button class="cart">+</button>
+                 </div>
+               </div>
+             `;
+           });
+         });
+     </script>
+   </body>
+   </html>

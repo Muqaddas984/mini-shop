@@ -1,0 +1,101 @@
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <title>Shop | Petal Corner</title>
+     <link rel="preconnect" href="https://fonts.googleapis.com" />
+     <link
+       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap"
+       rel="stylesheet"
+     />
+     <link rel="stylesheet" href="style.css" />
+     <style>
+       .shop-head { padding-bottom: 30px; }
+       .shop-head h1 { margin-top: 40px; }
+       .filters { text-align: center; margin: 30px 0 10px; }
+       .filters button {
+         border: 1px solid #8a1240;
+         background: none;
+         color: #8a1240;
+         padding: 8px 18px;
+         border-radius: 20px;
+         margin: 4px;
+         cursor: pointer;
+         font-size: 14px;
+       }
+       .filters button.active { background: #8a1240; color: #fff; }
+       .shop-grid { margin-top: 24px; }
+       .shop-grid .card { background: #fff; box-shadow: 0 2px 10px rgba(74, 26, 44, 0.1); }
+       .shop-grid .desc { font-size: 13px; color: #7a5a64; margin: 0 4px 8px; }
+     </style>
+   </head>
+   <body>
+     <div class="wrap">
+       <div class="hero-box shop-head">
+         <nav>
+           <div class="links">
+             <a href="index.html">Home</a>
+             <a href="shop.html">Shop</a>
+             <a href="about.html">About</a>
+           </div>
+           <div class="logo">Petal Corner</div>
+           <a class="nav-btn" href="shop.html">Shop Now</a>
+         </nav>
+         <h1>Our Flowers</h1>
+         <p>Pick your favorite from our fresh collection.</p>
+       </div>
+
+       <div class="filters" id="filters"></div>
+       <div class="grid shop-grid" id="shop"></div>
+
+       <footer>Petal Corner, made with love</footer>
+     </div>
+
+     <script>
+       let allFlowers = [];
+
+       function showFlowers(list) {
+         const box = document.getElementById("shop");
+         box.innerHTML = "";
+         list.forEach((flower) => {
+           box.innerHTML += `
+             <div class="card">
+               <img src="${flower.image}" alt="${flower.name}" />
+               <h3>${flower.name}</h3>
+               <p class="desc">${flower.description}</p>
+               <div class="row">
+                 <span class="price">Rs ${flower.price}</span>
+                 <button class="cart">+</button>
+               </div>
+             </div>
+           `;
+         });
+       }
+
+       function makeFilters() {
+         const names = ["All", ...new Set(allFlowers.map((f) => f.category))];
+         const box = document.getElementById("filters");
+         names.forEach((name) => {
+           const btn = document.createElement("button");
+           btn.textContent = name;
+           if (name === "All") btn.classList.add("active");
+           btn.onclick = () => {
+             document.querySelectorAll(".filters button").forEach((b) => b.classList.remove("active"));
+             btn.classList.add("active");
+             showFlowers(name === "All" ? allFlowers : allFlowers.filter((f) => f.category === name));
+           };
+           box.appendChild(btn);
+         });
+       }
+
+       fetch("/products")
+         .then((response) => response.json())
+         .then((flowers) => {
+           allFlowers = flowers;
+           makeFilters();
+           showFlowers(allFlowers);
+         });
+     </script>
+   </body>
+   </html>
